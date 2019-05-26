@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>乐淘-后台管理登录</title>
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
+    <script src="./lib/jquery/jquery.min.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            color: #888;
+            line-height: 30px;
+            text-align: center;
+            background:url(./public/images/login_bg.jpg) no-repeat;
+            background-size:cover;
+        }
+
+        body,html,.container{
+            height:100%;
+        }
+
+
+        h1, h2 {
+            margin-top: 10px;
+            font-size: 38px;
+            font-weight: 100;
+            color: #555;
+            line-height: 50px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 300;
+            color: #555;
+            line-height: 30px;
+        }
+
+        img { max-width: 100%; }
+
+        ::-moz-selection { background: #4aaf51; color: #fff; text-shadow: none; }
+        ::selection { background: #4aaf51; color: #fff; text-shadow: none; }
+
+        .position{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform:translateX(-50%) translateY(-50%);
+        }
+
+        .form-top {
+            overflow: hidden;
+            padding: 0 25px 15px 25px;
+            background: #fff;
+            -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0;
+            text-align: left;
+        }
+
+        .form-top-left {
+            float: left;
+            width: 75%;
+            padding-top: 25px;
+        }
+
+        .form-top-left h3 { margin-top: 0; }
+
+        .form-top-right {
+            float: left;
+            width: 25%;
+            padding-top: 5px;
+            font-size: 66px;
+            color: #ddd;
+            line-height: 100px;
+            text-align: right;
+        }
+
+        .form-bottom {
+            padding: 25px 25px 30px 25px;
+            background: #eee;
+            -moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
+            text-align: left;
+        }
+
+        .form-bottom form textarea {
+            height: 100px;
+        }
+
+        .form-bottom form button.btn {
+            width: 100%;
+        }
+        .form-bottom form .input-error {
+            border-color: #4aaf51;
+        }
+
+        /***** Media queries *****/
+
+        @media (min-width: 992px) and (max-width: 1199px) {}
+
+        @media (min-width: 768px) and (max-width: 991px) {}
+
+        @media (max-width: 767px) {
+
+            .inner-bg { padding: 60px 0 110px 0; }
+
+        }
+        @media (max-width: 415px) {
+            h1, h2 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 position">
+            <div class="form-top">
+                <div class="form-top-left">
+                    <h3>登录乐淘后台管理系统</h3>
+                    <p>请输入您的用户名和密码</p>
+                </div>
+                <div class="form-top-right">
+                    <i class="fa fa-key"></i>
+                </div>
+            </div>
+            <div class="form-bottom">
+                <form role="form" action="" method="post" class="login-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="用户名..." class="form-username form-control" name="username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="密码..." class="form-password form-control" name="password">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="login-button">登录</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+
+        /**
+         * 登录
+         * 1.获取登录按钮并且添加点击事件
+         * 2.获取用户输入的用户名和密码
+         * 3.对用户输入的表单信息进行验证
+         * 4.调用登录接口实现登录
+         * 5.登录成功 跳转到用户管理页面
+         */
+
+        $('#login-button').on('click', function(){
+
+            var username = $.trim($("[name='username']").val());
+            var password = $.trim($("[name='password']").val());
+
+            if(!username){
+                alert("请输入用户名");
+                return;
+            }
+
+            if(!password){
+                alert("请输入密码");
+                return;
+            }
+
+            $.ajax({
+                url: '/employee/employeeLogin',
+                type: 'post',
+                data: {
+                    username: username,
+                    password: password
+                },
+                success: function(res){
+
+                    if(res.success){
+
+                        // 登录成功
+                        location.href = "user.html";
+
+                    }else {
+
+                        alert(res.message);
+
+                    }
+
+                }
+            });
+
+        });
+
+    });
+    </script>
+</body>
+</html>
